@@ -11,6 +11,6 @@ namespace Bliss.Recruitment.Entities
         public string ThumbUrl { get; set; }
         public DateTime PublishedAt { get; set; }
 
-        public virtual ICollection<QuestionChoice> QuestionChoices { get; set; }
+        public virtual ICollection<QuestionChoice> QuestionChoices { get; set; } = new HashSet<QuestionChoice>();
     }
 }
