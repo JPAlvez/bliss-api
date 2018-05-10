@@ -67,7 +67,7 @@ namespace Bliss.Recruitment.Data.Core
         public virtual TEntity Get(long id)
         {
             var result = DbSet.Find(id);
-            if (null != result)
+            if (result != null)
             {
                 var dbEntry = DbContext.Entry(result);
                 dbEntry.State = EntityState.Detached;

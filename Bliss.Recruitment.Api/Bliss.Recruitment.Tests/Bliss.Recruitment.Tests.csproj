@@ -56,7 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\QuestionBcTests.cs" />
+    <Compile Include="EmailDataAgentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -66,6 +68,14 @@
     <ProjectReference Include="..\Bliss.Recruitment.Business\Bliss.Recruitment.Business.csproj">
       <Project>{b64780e2-b331-48e6-bfad-68cf26514e42}</Project>
       <Name>Bliss.Recruitment.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bliss.Recruitment.Common\Bliss.Recruitment.Common.csproj">
+      <Project>{46D942A8-3202-4C79-8F19-B46F309C1BC6}</Project>
+      <Name>Bliss.Recruitment.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bliss.Recruitment.Email\Bliss.Recruitment.Email.csproj">
+      <Project>{475BC6A3-A871-497B-B7C6-91C027CD2C7E}</Project>
+      <Name>Bliss.Recruitment.Email</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bliss.Recruitment.Entities\Bliss.Recruitment.Entities.csproj">
       <Project>{69840fba-182b-489c-aa6c-44ed2d23d429}</Project>

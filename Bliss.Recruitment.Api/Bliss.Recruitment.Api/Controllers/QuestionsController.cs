@@ -1,16 +1,12 @@
 ﻿using Bliss.Recruitment.Api.Core;
 using Bliss.Recruitment.Business.Components;
 using Bliss.Recruitment.Business.Interfaces;
-using Bliss.Recruitment.Entities;
+using Bliss.Recruitment.Common.Exceptions;
 using Bliss.Recruitment.Entities.RequestModel;
 using Bliss.Recruitment.Entities.ResultModel;
 using Bliss.Recruitment.Entities.SearchModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace Bliss.Recruitment.Api.Controllers
@@ -59,8 +55,7 @@ namespace Bliss.Recruitment.Api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    //throw new GalpBusinessException(this.GetModelErrors(ModelState));
-                    throw new Exception("ModelErrors");
+                    throw new BlissException(CommonExceptionResources.AllFieldsMandatory);
                 }
 
                 return Ok(questionBc.CreateQuestion(requestModel));
@@ -76,6 +71,11 @@ namespace Bliss.Recruitment.Api.Controllers
         {
             return await ExecuteAsync<IHttpActionResult>(() =>
             {
+                if (!ModelState.IsValid)
+                {
+                    throw new BlissException(CommonExceptionResources.AllFieldsMandatory);
+                }
+
                 return Ok(questionBc.UpdateQuestion(model));
             }, cancellationToken);
         }

@@ -1,6 +1,10 @@
 ﻿using Bliss.Recruitment.Business.Components;
 using Bliss.Recruitment.Business.Interfaces;
+using Bliss.Recruitment.Common.Exceptions;
 using Bliss.Recruitment.Entities;
+using Bliss.Recruitment.Entities.RequestModel;
+using Bliss.Recruitment.Entities.ResultModel;
+using Bliss.Recruitment.Entities.SearchModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -22,103 +26,145 @@ namespace Bliss.Recruitment.Tests.Business
         [TestMethod]
         public void QuestionBcTests_AddQuestion()
         {
-            //var random = new Random().Next(1, 99999);
-            //var question = new Question
-            //{
-            //    QuestionDescription = $"Random question nr. {random}",
-            //    ImageUrl = "https://www.google.pt/search?q=image",
-            //    ThumbUrl = "https://www.google.pt/search?q=thumb",
-            //    PublishedAt = DateTime.Now
-            //};
+            var random = TestUtils.RandomString(10);
+            var question = new QuestionRequestModel
+            {
+                Question = $"Random question {random} with choice (Add)",
+                ImageUrl = "https://www.google.pt/search?q=image",
+                ThumbUrl = "https://www.google.pt/search?q=thumb",
+                Choices = new[] { $"choice1_{random}", $"choice2_{random}", $"choice3_{random}" }
+            };
 
-            //var dbQuestion = questionBc.Add(question);
-            //Assert.IsTrue(dbQuestion.Id > 0);
+            var dbQuestion = questionBc.CreateQuestion(question);
+            Assert.IsTrue(dbQuestion.Id > 0);
         }
 
         [TestMethod]
         public void QuestionBcTests_GetQuestion()
         {
-            //var random = new Random().Next(1, 99999);
-            //var question = new Question
-            //{
-            //    QuestionDescription = $"Random question nr. {random}",
-            //    ImageUrl = "https://www.google.pt/search?q=image",
-            //    ThumbUrl = "https://www.google.pt/search?q=thumb",
-            //    PublishedAt = DateTime.Now
-            //};
+            var random = TestUtils.RandomString(10);
+            var question = new QuestionRequestModel
+            {
+                Question = $"Random question {random} with choice (Get)",
+                ImageUrl = "https://www.google.pt/search?q=image",
+                ThumbUrl = "https://www.google.pt/search?q=thumb",
+                Choices = new[] { $"choice1_{random}", $"choice2_{random}", $"choice3_{random}" }
+            };
 
-            //var dbQuestion = questionBc.Add(question);
-            //Assert.IsNotNull(questionBc.GetById(dbQuestion.Id));
+            var dbQuestion = questionBc.CreateQuestion(question);
+            Assert.IsNotNull(questionBc.GetById(dbQuestion.Id));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(BlissException))]
         public void QuestionBcTests_GetNonExistingQuestion()
         {
-            //var question = questionBc.GetById(0);
+            var question = questionBc.GetById(0);
         }
 
         [TestMethod]
         public void QuestionBcTests_GetAllQuestions()
         {
-            //var random = new Random().Next(1, 99999);
-            //var question = new Question
-            //{
-            //    QuestionDescription = $"Random question nr. {random}",
-            //    ImageUrl = "https://www.google.pt/search?q=image",
-            //    ThumbUrl = "https://www.google.pt/search?q=thumb",
-            //    PublishedAt = DateTime.Now
-            //};
+            var random = TestUtils.RandomString(10);
+            var question = new QuestionRequestModel
+            {
+                Question = $"Random question {random} with choice (GetAll)",
+                ImageUrl = "https://www.google.pt/search?q=image",
+                ThumbUrl = "https://www.google.pt/search?q=thumb",
+                Choices = new[] { $"choice1_{random}", $"choice2_{random}", $"choice3_{random}" }
+            };
 
-            //questionBc.Add(question);
-            //var result = questionBc.GetSearchQuery();
-            //Assert.IsTrue(result.Count() >= 1);
+            questionBc.CreateQuestion(question);
+
+            var search = new BaseSearchModel
+            {
+                Limit = 1,
+                Offset = 0,
+                Filter = random
+            };
+
+            var result = questionBc.GetSearchQuery(search);
+            Assert.IsTrue(result.Count() >= 1);
+
+            var choices = result.FirstOrDefault().Choices;
+            Assert.IsNotNull(choices);
+            Assert.IsTrue(choices.Count() > 1);
         }
 
         [TestMethod]
-        public void QuestionBcTests_EditQuestion()
+        public void QuestionBcTests_UpdateQuestion()
         {
-            //var random = new Random().Next(1, 99999);
-            //var question = new Question
+            //var random = TestUtils.RandomString(10);
+            //var search = new BaseSearchModel
             //{
-            //    QuestionDescription = $"Random question nr. {random}",
-            //    ImageUrl = "https://www.google.pt/search?q=image",
-            //    ThumbUrl = "https://www.google.pt/search?q=thumb",
-            //    PublishedAt = DateTime.Now
+            //    Limit = 1,
+            //    Offset = 0
             //};
 
-            //var dbQuestion = questionBc.Add(question);
-            //var original = dbQuestion.QuestionDescription;
+            //var result = questionBc.GetSearchQuery(search);
 
-            //dbQuestion.QuestionDescription = $"Updated description";
+            //if (!result.Any())
+            //{
+            //    Assert.Inconclusive();
+            //}
+            //else
+            //{
+            //    var dbQuestion = result.FirstOrDefault();
+            //    var original = dbQuestion.Question;
 
-            //var result = questionBc.Edit(dbQuestion);
-            //Assert.AreNotEqual(original, result.QuestionDescription);
+            //    dbQuestion.Id = dbQuestion.Id;
+            //    dbQuestion.Question = $"Updated description {random}";
+            //    dbQuestion.Choices = new QuestionChoiceResponseModel[]
+            //    {
+            //        new QuestionChoiceResponseModel
+            //        {
+            //            Name = $"choice_{random}",
+            //            Votes = 1
+            //        }
+            //    };
+
+            //    var updated = questionBc.UpdateQuestion(dbQuestion);
+            //    Assert.AreNotEqual(original, updated.Question);
+            //}
+
+            var random = TestUtils.RandomString(10);
+            var question = new QuestionRequestModel
+            {
+                Question = $"Random question {random} with choice (Get)",
+                ImageUrl = "https://www.google.pt/search?q=image",
+                ThumbUrl = "https://www.google.pt/search?q=thumb",
+                Choices = new[] { $"choice1_{random}", $"choice2_{random}", $"choice3_{random}" }
+            };
+
+            var dbQuestion = questionBc.CreateQuestion(question);
+            Assert.IsNotNull(questionBc.GetById(dbQuestion.Id));
+
+            var original = dbQuestion.Question;
+
+            dbQuestion.Id = dbQuestion.Id;
+            dbQuestion.Question = $"Updated description {random}";
+            dbQuestion.Choices = new QuestionChoiceResponseModel[]
+            {
+                new QuestionChoiceResponseModel
+                {
+                    Name = $"choice_{random}",
+                    Votes = 1
+                }
+            };
+
+            var updated = questionBc.UpdateQuestion(dbQuestion);
+            Assert.AreNotEqual(original, updated.Question);
         }
 
         [TestMethod]
-        public void QuestionBcTests_DeleteQuestion()
+        [ExpectedException(typeof(BlissException))]
+        public void QuestionBcTests_UpdateNonExistingQuestion()
         {
-            //var random = new Random().Next(1, 99999);
-            //var question = new Question
-            //{
-            //    QuestionDescription = $"Random question nr. {random}",
-            //    ImageUrl = "https://www.google.pt/search?q=image",
-            //    ThumbUrl = "https://www.google.pt/search?q=thumb",
-            //    PublishedAt = DateTime.Now
-            //};
-
-            //var dbQuestion = questionBc.Add(question);
-
-            //var deletedId = dbQuestion.Id;
-            //questionBc.Delete(deletedId);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void QuestionBcTests_DeletenonExistingQuestion()
-        {
-            //questionBc.Delete(0);
+            var question = new QuestionResponseModel
+            {
+                Id = 0
+            };
+            var updated = questionBc.UpdateQuestion(question);
         }
 
     }

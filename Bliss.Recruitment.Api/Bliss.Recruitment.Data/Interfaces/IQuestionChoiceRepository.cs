@@ -1,11 +1,12 @@
 ﻿using Bliss.Recruitment.Data.Core;
 using Bliss.Recruitment.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace Bliss.Recruitment.Data.Interfaces
 {
     public interface IQuestionChoiceRepository : IBaseRepository<QuestionChoice>, IDisposable
     {
-        QuestionChoice GetByQuestionAndName(long questionId, string name);
+        void DeleteByQuestionId(long questionId);
     }
 }

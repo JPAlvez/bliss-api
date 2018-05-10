@@ -1,4 +1,6 @@
-﻿namespace Bliss.Recruitment.Data.Core
+﻿using System.Collections.Generic;
+
+namespace Bliss.Recruitment.Data.Core
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {

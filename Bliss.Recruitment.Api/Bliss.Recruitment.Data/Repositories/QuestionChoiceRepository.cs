@@ -14,9 +14,13 @@ namespace Bliss.Recruitment.Data.Repositories
         {
         }
 
-        public QuestionChoice GetByQuestionAndName(long questionId, string name)
+        public void DeleteByQuestionId(long questionId)
         {
-            return Query.Where(x => x.QuestionId == questionId && x.Name == name).FirstOrDefault();
+            var choices = Query.Where(x => x.QuestionId == questionId).ToArray();
+            foreach (var choice in choices)
+            {
+                Delete(choice);
+            }
         }
     }
 }

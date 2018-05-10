@@ -1,4 +1,5 @@
 ﻿using Bliss.Recruitment.Business.Interfaces;
+using Bliss.Recruitment.Common.Exceptions;
 using Bliss.Recruitment.Data.Context;
 using Bliss.Recruitment.Data.Interfaces;
 using Bliss.Recruitment.Data.Repositories;
@@ -46,7 +47,7 @@ namespace Bliss.Recruitment.Business.Components
             var question = questionRepo.GetById(id);
             if (question == null)
             {
-                throw new Exception("Question does not exist."); // CustomException ?
+                throw new BlissException(CommonExceptionResources.QuestionNotFound);
             }
 
             return new QuestionResponseModel
@@ -106,13 +107,20 @@ namespace Bliss.Recruitment.Business.Components
             var dbQuestion = questionRepo.GetById(model.Id);
             if (dbQuestion == null)
             {
-                throw new Exception("Question does not exist."); // CustomException ?
+                throw new BlissException(CommonExceptionResources.QuestionNotFound);
             }
 
+            // Delete old choices
+            questionChoiceRepo.DeleteByQuestionId(dbQuestion.Id);
+            questionRepo.Save();
+            
             questionRepo.TrackExisting(dbQuestion);
+
+            // Add new choices
             MapQuestion(dbQuestion, model);
             questionRepo.Save();
 
+            model.PublishedAt = dbQuestion.PublishedAt;
             return model;
         }
 
@@ -125,21 +133,12 @@ namespace Bliss.Recruitment.Business.Components
 
             foreach (var choice in model.Choices)
             {
-                //var dbQuestionChoice = questionChoiceRepo.GetByQuestionAndName(dbQuestion.Id, choice.Name);
-                var dbQuestionChoice = dbQuestion.QuestionChoices.Where(qc => qc.Name == choice.Name).FirstOrDefault();
-                if (dbQuestionChoice != null)
+                questionChoiceRepo.Add(new QuestionChoice
                 {
-                    //questionChoiceRepo.TrackExisting(dbQuestionChoice);
-                    dbQuestionChoice.Votes = choice.Votes;
-                }
-                else
-                {
-                    dbQuestion.QuestionChoices.Add(new QuestionChoice
-                    {
-                        Name = choice.Name,
-                        Votes = choice.Votes
-                    });
-                }
+                    QuestionId = dbQuestion.Id,
+                    Name = choice.Name,
+                    Votes = choice.Votes
+                });
             }
         }
     }

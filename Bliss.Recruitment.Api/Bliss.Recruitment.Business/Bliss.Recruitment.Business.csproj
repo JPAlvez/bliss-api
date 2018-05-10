@@ -48,13 +48,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\QuestionBc.cs" />
+    <Compile Include="Components\ShareBc.cs" />
     <Compile Include="Interfaces\IQuestionBc.cs" />
+    <Compile Include="Interfaces\IShareBc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bliss.Recruitment.Common\Bliss.Recruitment.Common.csproj">
+      <Project>{46D942A8-3202-4C79-8F19-B46F309C1BC6}</Project>
+      <Name>Bliss.Recruitment.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bliss.Recruitment.Data\Bliss.Recruitment.Data.csproj">
       <Project>{7E344169-0DA6-499F-A8AA-E7958EE996A4}</Project>
       <Name>Bliss.Recruitment.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bliss.Recruitment.Email\Bliss.Recruitment.Email.csproj">
+      <Project>{475BC6A3-A871-497B-B7C6-91C027CD2C7E}</Project>
+      <Name>Bliss.Recruitment.Email</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bliss.Recruitment.Entities\Bliss.Recruitment.Entities.csproj">
       <Project>{69840fba-182b-489c-aa6c-44ed2d23d429}</Project>
