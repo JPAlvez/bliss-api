@@ -1,6 +1,6 @@
 # bliss-api
 
-Bliss API
+Bliss Recruitment API
 
 Steps to setup and run the software:
 
