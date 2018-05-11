@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
-
-namespace Bliss.Recruitment.Entities.ResultModel
+﻿namespace Bliss.Recruitment.Entities.ResultModel
 {
     public class QuestionChoiceResponseModel
     {
-        [JsonProperty(PropertyName = "name")]
+        /// <summary>
+        /// Name of question's choice.
+        /// </summary>
         public string Name { get; set; }
-        [JsonProperty(PropertyName = "votes")]
+        /// <summary>
+        /// Votes of question's choice.
+        /// </summary>
         public int Votes { get; set; }
     }
 }

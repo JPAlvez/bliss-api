@@ -94,66 +94,54 @@ namespace Bliss.Recruitment.Tests.Business
         [TestMethod]
         public void QuestionBcTests_UpdateQuestion()
         {
-            //var random = TestUtils.RandomString(10);
-            //var search = new BaseSearchModel
-            //{
-            //    Limit = 1,
-            //    Offset = 0
-            //};
-
-            //var result = questionBc.GetSearchQuery(search);
-
-            //if (!result.Any())
-            //{
-            //    Assert.Inconclusive();
-            //}
-            //else
-            //{
-            //    var dbQuestion = result.FirstOrDefault();
-            //    var original = dbQuestion.Question;
-
-            //    dbQuestion.Id = dbQuestion.Id;
-            //    dbQuestion.Question = $"Updated description {random}";
-            //    dbQuestion.Choices = new QuestionChoiceResponseModel[]
-            //    {
-            //        new QuestionChoiceResponseModel
-            //        {
-            //            Name = $"choice_{random}",
-            //            Votes = 1
-            //        }
-            //    };
-
-            //    var updated = questionBc.UpdateQuestion(dbQuestion);
-            //    Assert.AreNotEqual(original, updated.Question);
-            //}
-
             var random = TestUtils.RandomString(10);
-            var question = new QuestionRequestModel
+            var search = new BaseSearchModel
             {
-                Question = $"Random question {random} with choice (Get)",
-                ImageUrl = "https://www.google.pt/search?q=image",
-                ThumbUrl = "https://www.google.pt/search?q=thumb",
-                Choices = new[] { $"choice1_{random}", $"choice2_{random}", $"choice3_{random}" }
+                Limit = 10,
+                Offset = 0,
+                Filter = "Random"
             };
 
-            var dbQuestion = questionBc.CreateQuestion(question);
-            Assert.IsNotNull(questionBc.GetById(dbQuestion.Id));
+            var result = questionBc.GetSearchQuery(search);
 
-            var original = dbQuestion.Question;
-
-            dbQuestion.Id = dbQuestion.Id;
-            dbQuestion.Question = $"Updated description {random}";
-            dbQuestion.Choices = new QuestionChoiceResponseModel[]
+            if (!result.Any())
             {
-                new QuestionChoiceResponseModel
+                Assert.Inconclusive();
+            }
+            else
+            {
+                bool updated = false;
+                foreach (var question in result)
                 {
-                    Name = $"choice_{random}",
-                    Votes = 1
-                }
-            };
+                    if (question.Choices.Any()) 
+                    {
+                        var dbQuestion = result.FirstOrDefault();
+                        var original = dbQuestion.Question;
 
-            var updated = questionBc.UpdateQuestion(dbQuestion);
-            Assert.AreNotEqual(original, updated.Question);
+                        dbQuestion.Id = dbQuestion.Id;
+                        dbQuestion.Question = $"Updated description {random}";
+                        dbQuestion.Choices = new QuestionChoiceResponseModel[]
+                        {
+                            new QuestionChoiceResponseModel
+                            {
+                                Name = $"choice_{random}",
+                                Votes = 1
+                            }
+                        };
+
+                        var updatedQuestion = questionBc.UpdateQuestion(dbQuestion);
+                        Assert.AreNotEqual(original, updatedQuestion.Question);
+
+                        updated = true;
+                        break;
+                    }
+                }
+
+                if (!updated)
+                {
+                    Assert.Inconclusive();
+                }
+            }
         }
 
         [TestMethod]

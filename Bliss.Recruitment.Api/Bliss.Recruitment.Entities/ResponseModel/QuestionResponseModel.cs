@@ -1,22 +1,33 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Bliss.Recruitment.Entities.ResultModel
 {
     public class QuestionResponseModel
     {
-        [JsonProperty(PropertyName = "id")]
+        /// <summary>
+        /// Id of question.
+        /// </summary>
         public long Id { get; set; }
-        [JsonProperty(PropertyName = "question")]
+        /// <summary>
+        /// Name of question.
+        /// </summary>
         public string Question { get; set; }
-        [JsonProperty(PropertyName = "image_url")]
+        /// <summary>
+        /// Url image of question.
+        /// </summary>
         public string ImageUrl { get; set; }
-        [JsonProperty(PropertyName = "thumb_url")]
+        /// <summary>
+        /// Url thumbnail of question.
+        /// </summary>
         public string ThumbUrl { get; set; }
-        [JsonProperty(PropertyName = "published_at")]
+        /// <summary>
+        /// Published date of question.
+        /// </summary>
         public DateTime PublishedAt { get; set; }
-        [JsonProperty(PropertyName = "choices")]
+        /// <summary>
+        /// List of strings for describe a choice.
+        /// </summary>
         public IEnumerable<QuestionChoiceResponseModel> Choices { get; set; }
     }
 }

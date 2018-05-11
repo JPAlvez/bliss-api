@@ -46,6 +46,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommonExceptionResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

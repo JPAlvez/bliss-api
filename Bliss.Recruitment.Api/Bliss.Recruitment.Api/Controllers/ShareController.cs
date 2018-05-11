@@ -20,6 +20,9 @@ namespace Bliss.Recruitment.Api.Controllers
             this.shareBc = new ShareBc();
         }
 
+        /// <summary>
+        /// Share a question.
+        /// </summary>
         [HttpPost]
         [Route("")]
         public async Task<IHttpActionResult> ShareQuestion(

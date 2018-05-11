@@ -19,8 +19,8 @@ namespace Bliss.Recruitment.Tests
         public void EmailDataAgentTests_SendEmail()
         {
             IEnumerable<string> to = new[] { "jalves@alter-solutions.com" };
-            IEnumerable<string> cc = null;
-            IEnumerable<string> bcc = null;
+            IEnumerable<string> cc = new[] { "j.alves@alter-solutions.com" };
+            IEnumerable<string> bcc = new[] { "ja.lves@alter-solutions.com" };
             string subject = "Assunto Teste";
             string body = "@Teste@";
 

@@ -27,19 +27,7 @@ namespace Bliss.Recruitment.Business.Components
 
         public IEnumerable<QuestionResponseModel> GetSearchQuery(BaseSearchModel searchModel)
         {
-            return questionRepo.GetSearchQuery(searchModel).Select(y => new QuestionResponseModel
-            {
-                Id = y.Id,
-                Question = y.QuestionDescription,
-                ImageUrl = y.ImageUrl,
-                ThumbUrl = y.ThumbUrl,
-                PublishedAt = y.PublishedAt,
-                Choices = y.QuestionChoices?.Select(qc => new QuestionChoiceResponseModel
-                {
-                    Name = qc.Name,
-                    Votes = qc.Votes
-                })
-            });
+            return questionRepo.GetSearchQuery(searchModel).Select(y => MapToQuestionModel(y));
         }
 
         public QuestionResponseModel GetById(long id)
@@ -50,19 +38,7 @@ namespace Bliss.Recruitment.Business.Components
                 throw new BlissException(CommonExceptionResources.QuestionNotFound);
             }
 
-            return new QuestionResponseModel
-            {
-                Id = question.Id,
-                Question = question.QuestionDescription,
-                ImageUrl = question.ImageUrl,
-                ThumbUrl = question.ThumbUrl,
-                PublishedAt = question.PublishedAt,
-                Choices = question.QuestionChoices?.Select(qc => new QuestionChoiceResponseModel
-                {
-                    Name = qc.Name,
-                    Votes = qc.Votes
-                })
-            };
+            return MapToQuestionModel(question);
         }
 
         public QuestionResponseModel CreateQuestion(QuestionRequestModel requestModel)
@@ -87,19 +63,7 @@ namespace Bliss.Recruitment.Business.Components
             var dbQuestion = questionRepo.Add(newQuestion);
             questionRepo.Save();
 
-            return new QuestionResponseModel
-            {
-                Id = dbQuestion.Id,
-                Question = dbQuestion.QuestionDescription,
-                ImageUrl = dbQuestion.ImageUrl,
-                ThumbUrl = dbQuestion.ThumbUrl,
-                PublishedAt = dbQuestion.PublishedAt,
-                Choices = dbQuestion.QuestionChoices?.Select(qc => new QuestionChoiceResponseModel
-                {
-                    Name = qc.Name,
-                    Votes = qc.Votes
-                })
-            };
+            return MapToQuestionModel(dbQuestion);
         }
         
         public QuestionResponseModel UpdateQuestion(QuestionResponseModel model)
@@ -124,6 +88,8 @@ namespace Bliss.Recruitment.Business.Components
             return model;
         }
 
+        #region Private methods
+
         private void MapQuestion(Question dbQuestion, QuestionResponseModel model)
         {
             dbQuestion.QuestionDescription = model.Question;
@@ -141,5 +107,25 @@ namespace Bliss.Recruitment.Business.Components
                 });
             }
         }
+
+        private QuestionResponseModel MapToQuestionModel(Question question)
+        {
+            return new QuestionResponseModel
+            {
+                Id = question.Id,
+                Question = question.QuestionDescription,
+                ImageUrl = question.ImageUrl,
+                ThumbUrl = question.ThumbUrl,
+                PublishedAt = question.PublishedAt,
+                Choices = question.QuestionChoices?.Select(qc => new QuestionChoiceResponseModel
+                {
+                    Name = qc.Name,
+                    Votes = qc.Votes
+                })
+            };
+        }
+
+        #endregion
+
     }
 }

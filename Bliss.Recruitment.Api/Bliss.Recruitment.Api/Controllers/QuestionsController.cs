@@ -21,6 +21,9 @@ namespace Bliss.Recruitment.Api.Controllers
             this.questionBc = new QuestionBc();
         }
 
+        /// <summary>
+        /// Get all questions.
+        /// </summary>
         [HttpGet]
         [Route("")]
         public async Task<IHttpActionResult> GetAllQuestions(
@@ -33,6 +36,9 @@ namespace Bliss.Recruitment.Api.Controllers
             }, cancellationToken);
         }
 
+        /// <summary>
+        /// Get a question.
+        /// </summary>
         [HttpGet]
         [Route("{id}")]
         public async Task<IHttpActionResult> GetQuestion(
@@ -45,6 +51,9 @@ namespace Bliss.Recruitment.Api.Controllers
             }, cancellationToken);
         }
 
+        /// <summary>
+        /// Create a question.
+        /// </summary>
         [HttpPost]
         [Route("")]
         public async Task<IHttpActionResult> CreateQuestion(
@@ -62,6 +71,9 @@ namespace Bliss.Recruitment.Api.Controllers
             }, cancellationToken);
         }
 
+        /// <summary>
+        /// Update a question.
+        /// </summary>
         [HttpPut]
         [Route("{id}")]
         public async Task<IHttpActionResult> UpdateQuestion(

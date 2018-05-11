@@ -8,16 +8,13 @@ namespace Bliss.Recruitment.Api.Core
 {
     public abstract class BaseApiController : ApiController
     {
+        /// <summary>
+        /// Function to create new task for every API service.
+        /// </summary>
         [ApiExplorerSettings(IgnoreApi = true)]
         protected async Task<T> ExecuteAsync<T>(Func<T> action, CancellationToken cancellationToken)
         {
             return await Task<T>.Factory.StartNew(action, cancellationToken);
-        }
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        protected async Task ExecuteAsync(Action action, CancellationToken cancellationToken)
-        {
-            await Task.Factory.StartNew(action, cancellationToken);
         }
     }
 }

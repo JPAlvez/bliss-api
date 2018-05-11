@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-
-namespace Bliss.Recruitment.Entities.ResponseModel
+﻿namespace Bliss.Recruitment.Entities.ResponseModel
 {
     public class BaseExceptionResponseModel
     {
-        [JsonProperty(PropertyName = "status")]
+        /// <summary>
+        /// Status description.
+        /// </summary>
         public string Status { get; set; }
     }
 }

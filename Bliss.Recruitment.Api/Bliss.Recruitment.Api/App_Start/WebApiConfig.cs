@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,8 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.ValueProviders;
+using System.Web.Http.ValueProviders.Providers;
 
 namespace Bliss.Recruitment.Api
 {
@@ -26,8 +29,18 @@ namespace Bliss.Recruitment.Api
             );
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
+            jsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new SnakeCaseNamingStrategy()
+            };
             jsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             config.Services.Replace(typeof(IContentNegotiator), new JsonContentNegotiator(jsonFormatter));
+
+            // Change property names to snakecase on requests
+            config.Services.Remove(typeof(ValueProviderFactory),
+                config.Services.GetValueProviderFactories().First(f => f is QueryStringValueProviderFactory)
+            );
+            config.Services.Insert(typeof(ValueProviderFactory), 0, new SnakeQueryStringValueProviderFactory());
         }
 
         public class JsonContentNegotiator : IContentNegotiator
